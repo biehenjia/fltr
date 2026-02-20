@@ -1,19 +1,6 @@
-import cv2
-import numpy as np
-
-
-PATH = "img.jpg"
-
-im = cv2.imread(PATH)
-width, height, channels = im.shape
-ratio = width/height
-height = 200
-width = ratio * height
-resized = im.resize()
-
+import cv2, numpy
 
 def pipeline(path):
-
     image = cv2.imread(path)
     if image is None:
         raise ValueError("Image not found")
@@ -37,9 +24,9 @@ def pipeline(path):
     p_height = height // pixel_size
 
     canny_color = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
-
-    for i in range(p_height):
-        for j in range(p_width):
+    pixels = numpy.zeros((p_width+2,p_height+2))
+    for i in range(p_height+2):
+        for j in range(p_width+2):
             x = j * pixel_size
             y = i * pixel_size
             cv2.circle(canny_color, (x, y), 2, (0,255,0), -1)
@@ -48,6 +35,5 @@ def pipeline(path):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-    
-
-pipeline(PATH)
+path = "img.jpg"
+pipeline(path)
